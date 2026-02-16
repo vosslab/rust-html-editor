@@ -4,3 +4,19 @@ report_ascii_compliance.txt
 .DS_Store
 report_bandit.txt
 report_pyright.txt
+
+# Node.js
+node_modules/
+package-lock.json
+
+# Vite build output
+dist/
+
+# Tauri build output
+src-tauri/target/
+
+# Generated files
+app-icon.png
+src-tauri/gen/
+.pytest_cache/
+src-tauri/.pytest_cache/

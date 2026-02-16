@@ -1,0 +1,65 @@
+/* Find/replace floating panel */
+.find-replace-panel {
+  position: fixed;
+  top: 50px;
+  right: 20px;
+  z-index: 1000;
+  background: #f8f8f8;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  min-width: 360px;
+}
+
+.find-row,
+.replace-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.find-input,
+.replace-input {
+  flex: 1;
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 13px;
+  outline: none;
+}
+
+.find-input:focus,
+.replace-input:focus {
+  border-color: #4a90d9;
+}
+
+.find-replace-panel button {
+  padding: 4px 8px;
+  border: 1px solid #bbb;
+  border-radius: 3px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.find-replace-panel button:hover {
+  background: #e0e0e0;
+}
+
+.find-count {
+  font-size: 12px;
+  color: #666;
+  min-width: 40px;
+  text-align: center;
+}
+
+.find-close-btn {
+  font-weight: bold;
+  color: #888;
+}
