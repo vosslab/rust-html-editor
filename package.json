@@ -1,7 +1,7 @@
 {
   "name": "rust-html-editor",
   "private": true,
-  "version": "26.2.0a1",
+  "version": "26.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",

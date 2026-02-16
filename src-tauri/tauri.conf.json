@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/nicerdicer/tauri-v2-schema/main/schema.json",
   "productName": "Rust HTML Editor",
-  "version": "0.1.0",
+  "version": "26.2.0",
   "identifier": "com.vosslab.rust-html-editor",
   "build": {
     "frontendDist": "../dist",
@@ -23,7 +23,5 @@
       "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'"
     }
   },
-  "plugins": {
-    "dialog": {}
-  }
+  "plugins": {}
 }

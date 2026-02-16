@@ -17,6 +17,20 @@ pub struct ChapterData {
     pub is_fragment: bool,
 }
 
+/// Open a native file picker for HTML files and return the selected path.
+#[tauri::command]
+pub async fn open_file(app: tauri::AppHandle) -> Result<String, String> {
+    let file = app.dialog()
+        .file()
+        .add_filter("HTML files", &["html", "htm"])
+        .blocking_pick_file();
+
+    match file {
+        Some(path) => Ok(path.to_string()),
+        None => Err("No file selected".to_string()),
+    }
+}
+
 /// Open a native folder picker and return the selected path.
 #[tauri::command]
 pub async fn open_project(app: tauri::AppHandle) -> Result<String, String> {
