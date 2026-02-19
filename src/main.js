@@ -156,6 +156,85 @@ function navigateChapter(direction) {
 }
 
 //============================================
+function toggleTheme() {
+  /**
+   * Manual toggle overrides system preference and persists to localStorage.
+   */
+  const isDark = document.body.classList.toggle("dark");
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+}
+
+//============================================
+function applyTheme() {
+  /**
+   * Apply theme on startup. Uses localStorage if the user has manually toggled,
+   * otherwise follows the OS prefers-color-scheme setting.
+   */
+  const stored = localStorage.getItem("theme");
+  if (stored) {
+    // User has explicitly chosen a theme
+    document.body.classList.toggle("dark", stored === "dark");
+  } else {
+    // Follow system preference
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    document.body.classList.toggle("dark", prefersDark);
+  }
+
+  // Listen for system preference changes (only applies when no manual override)
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+    if (!localStorage.getItem("theme")) {
+      document.body.classList.toggle("dark", e.matches);
+    }
+  });
+}
+
+//============================================
+async function toggleFullscreen() {
+  /**
+   * Toggle fullscreen mode via Tauri window API.
+   */
+  const win = getCurrentWindow();
+  const isFull = await win.isFullscreen();
+  await win.setFullscreen(!isFull);
+}
+
+//============================================
+async function importMarkdown() {
+  /**
+   * Import a Markdown file, converting it to HTML in the editor.
+   */
+  const { marked } = await import("marked");
+
+  const filePath = await invoke("open_markdown_file");
+  const content = await invoke("read_text_file", { filePath: filePath });
+
+  // Convert Markdown to HTML
+  const html = marked(content);
+  editor.commands.setContent(html);
+  setDirty(true);
+  const filename = filePath.split("/").pop();
+  updateStatusBar(filename, true, editor);
+}
+
+//============================================
+async function exportMarkdown() {
+  /**
+   * Export the current editor content as a Markdown file.
+   */
+  const TurndownService = (await import("turndown")).default;
+  const turndown = new TurndownService();
+
+  // Get HTML from editor
+  const html = editor.getHTML();
+
+  // Convert to Markdown
+  const markdown = turndown.turndown(html);
+
+  // Save via Tauri dialog
+  await invoke("save_markdown_file", { content: markdown });
+}
+
+//============================================
 function setupKeyboardShortcuts() {
   /**
    * Register global keyboard shortcuts.
@@ -221,7 +300,7 @@ function addToolbarOpenButton() {
    */
   const toolbar = document.querySelector("#toolbar");
 
-  // Build elements in reverse order for prepending
+  // Build elements in reverse order for prepending (last added = leftmost)
   const firstChild = toolbar.firstChild;
 
   // Separator after Save
@@ -239,7 +318,7 @@ function addToolbarOpenButton() {
   saveBtn.addEventListener("click", saveCurrentChapter);
   toolbar.insertBefore(saveBtn, firstChild);
 
-  // Separator between Open and Save
+  // Separator between file buttons and Save
   const sep = document.createElement("span");
   sep.style.width = "1px";
   sep.style.height = "20px";
@@ -247,9 +326,16 @@ function addToolbarOpenButton() {
   sep.style.margin = "0 6px";
   toolbar.insertBefore(sep, firstChild);
 
-  // Open button (leftmost)
+  // Open Folder button
+  const folderBtn = document.createElement("button");
+  folderBtn.textContent = "Folder";
+  folderBtn.title = "Open Folder (Cmd+Shift+O)";
+  folderBtn.addEventListener("click", openProject);
+  toolbar.insertBefore(folderBtn, firstChild);
+
+  // Open File button (leftmost)
   const openBtn = document.createElement("button");
-  openBtn.textContent = "Open";
+  openBtn.textContent = "File";
   openBtn.title = "Open File (Cmd+O)";
   openBtn.addEventListener("click", openFile);
   toolbar.insertBefore(openBtn, firstChild);
@@ -263,6 +349,9 @@ function init() {
   const editorContainer = document.querySelector("#editor-container");
   const toolbar = document.querySelector("#toolbar");
   const statusBar = document.querySelector("#status-bar");
+
+  // Apply theme: follows system preference, or localStorage if user toggled manually
+  applyTheme();
 
   // Create the editor
   editor = createEditor(editorContainer, () => {
@@ -345,6 +434,62 @@ function setupMenuListener() {
         break;
       case "prev_chapter":
         navigateChapter(-1);
+        break;
+      // Format menu actions
+      case "underline":
+        editor.chain().focus().toggleUnderline().run();
+        break;
+      case "subscript":
+        editor.chain().focus().toggleSubscript().run();
+        break;
+      case "superscript":
+        editor.chain().focus().toggleSuperscript().run();
+        break;
+      case "highlight":
+        editor.chain().focus().toggleHighlight().run();
+        break;
+      case "align_left":
+        editor.chain().focus().setTextAlign("left").run();
+        break;
+      case "align_center":
+        editor.chain().focus().setTextAlign("center").run();
+        break;
+      case "align_right":
+        editor.chain().focus().setTextAlign("right").run();
+        break;
+      case "align_justify":
+        editor.chain().focus().setTextAlign("justify").run();
+        break;
+      // Insert menu actions
+      case "horizontal_rule":
+        editor.chain().focus().setHorizontalRule().run();
+        break;
+      case "insert_image": {
+        const url = window.prompt("Enter image URL:");
+        if (url) {
+          editor.chain().focus().setImage({ src: url }).run();
+        }
+        break;
+      }
+      case "insert_table":
+        editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
+        break;
+      case "code_block":
+        editor.chain().focus().toggleCodeBlock().run();
+        break;
+      // View menu actions
+      case "fullscreen":
+        toggleFullscreen();
+        break;
+      case "dark_theme":
+        toggleTheme();
+        break;
+      // Markdown import/export
+      case "import_markdown":
+        importMarkdown();
+        break;
+      case "export_markdown":
+        exportMarkdown();
         break;
     }
   });

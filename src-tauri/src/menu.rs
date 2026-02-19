@@ -32,6 +32,10 @@ pub fn setup_menu(app: &tauri::App) -> Result<(), Box<dyn std::error::Error>> {
         .build(app)?;
     let export = MenuItemBuilder::with_id("export", "Export to Browser")
         .build(app)?;
+    let import_md = MenuItemBuilder::with_id("import_markdown", "Import Markdown...")
+        .build(app)?;
+    let export_md = MenuItemBuilder::with_id("export_markdown", "Export as Markdown...")
+        .build(app)?;
     let close_window = MenuItemBuilder::with_id("close_window", "Close Window")
         .accelerator("CmdOrCtrl+W")
         .build(app)?;
@@ -42,6 +46,9 @@ pub fn setup_menu(app: &tauri::App) -> Result<(), Box<dyn std::error::Error>> {
         .separator()
         .item(&save)
         .item(&export)
+        .separator()
+        .item(&import_md)
+        .item(&export_md)
         .separator()
         .item(&close_window)
         .build()?;
@@ -73,9 +80,62 @@ pub fn setup_menu(app: &tauri::App) -> Result<(), Box<dyn std::error::Error>> {
         .item(&find)
         .build()?;
 
+    // -- Format menu --
+    let underline = MenuItemBuilder::with_id("underline", "Underline")
+        .accelerator("CmdOrCtrl+U")
+        .build(app)?;
+    let subscript = MenuItemBuilder::with_id("subscript", "Subscript")
+        .build(app)?;
+    let superscript = MenuItemBuilder::with_id("superscript", "Superscript")
+        .build(app)?;
+    let highlight = MenuItemBuilder::with_id("highlight", "Highlight")
+        .build(app)?;
+    let align_left = MenuItemBuilder::with_id("align_left", "Align Left")
+        .build(app)?;
+    let align_center = MenuItemBuilder::with_id("align_center", "Align Center")
+        .build(app)?;
+    let align_right = MenuItemBuilder::with_id("align_right", "Align Right")
+        .build(app)?;
+    let align_justify = MenuItemBuilder::with_id("align_justify", "Justify")
+        .build(app)?;
+
+    let format_menu = SubmenuBuilder::new(app, "Format")
+        .item(&underline)
+        .item(&subscript)
+        .item(&superscript)
+        .item(&highlight)
+        .separator()
+        .item(&align_left)
+        .item(&align_center)
+        .item(&align_right)
+        .item(&align_justify)
+        .build()?;
+
+    // -- Insert menu --
+    let horizontal_rule = MenuItemBuilder::with_id("horizontal_rule", "Horizontal Rule")
+        .build(app)?;
+    let insert_image = MenuItemBuilder::with_id("insert_image", "Image...")
+        .build(app)?;
+    let insert_table = MenuItemBuilder::with_id("insert_table", "Table (3x3)")
+        .build(app)?;
+    let code_block = MenuItemBuilder::with_id("code_block", "Code Block")
+        .build(app)?;
+
+    let insert_menu = SubmenuBuilder::new(app, "Insert")
+        .item(&horizontal_rule)
+        .item(&insert_image)
+        .item(&insert_table)
+        .item(&code_block)
+        .build()?;
+
     // -- View menu --
     let source_view = MenuItemBuilder::with_id("source_view", "Toggle Source View")
         .accelerator("CmdOrCtrl+Shift+U")
+        .build(app)?;
+    let fullscreen = MenuItemBuilder::with_id("fullscreen", "Toggle Fullscreen")
+        .accelerator("Ctrl+CmdOrCtrl+F")
+        .build(app)?;
+    let dark_theme = MenuItemBuilder::with_id("dark_theme", "Toggle Dark Theme")
         .build(app)?;
     let zoom_in = MenuItemBuilder::with_id("zoom_in", "Zoom In")
         .accelerator("CmdOrCtrl+=")
@@ -89,6 +149,8 @@ pub fn setup_menu(app: &tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 
     let view_menu = SubmenuBuilder::new(app, "View")
         .item(&source_view)
+        .item(&fullscreen)
+        .item(&dark_theme)
         .separator()
         .item(&zoom_in)
         .item(&zoom_out)
@@ -113,6 +175,8 @@ pub fn setup_menu(app: &tauri::App) -> Result<(), Box<dyn std::error::Error>> {
         .item(&app_menu)
         .item(&file_menu)
         .item(&edit_menu)
+        .item(&format_menu)
+        .item(&insert_menu)
         .item(&view_menu)
         .item(&navigate_menu)
         .build()?;

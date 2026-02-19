@@ -1,6 +1,9 @@
 let statusBarElement = null;
 let debounceTimer = null;
 
+// Word count threshold for warning display
+const WORD_COUNT_WARNING = 5000;
+
 /**
  * Initialize the status bar module.
  *
@@ -30,6 +33,13 @@ export function updateStatusBar(filename, isDirty, editor) {
     const dirtyMark = isDirty ? " *" : "";
     const wordCount = countWords(editor);
     statusBarElement.textContent = `${displayName}${dirtyMark} | ${wordCount} words`;
+
+    // Apply warning style when word count exceeds threshold
+    if (wordCount > WORD_COUNT_WARNING) {
+      statusBarElement.classList.add("word-count-warning");
+    } else {
+      statusBarElement.classList.remove("word-count-warning");
+    }
   }, 300);
 }
 

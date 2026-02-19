@@ -1,5 +1,79 @@
 # Changelog
 
+## 2026-02-19
+
+### Toolbar file buttons
+- Split single "Open" toolbar button into "File" and "Folder" buttons
+- "File" opens a single HTML file (Cmd+O), "Folder" opens a project directory (Cmd+Shift+O)
+
+### Dark mode system preference matching
+- Dark theme now auto-detects OS `prefers-color-scheme` setting on startup
+- Listens for live system theme changes (e.g. macOS auto dark mode at sunset)
+- Manual toggle via View > Toggle Dark Theme overrides system preference
+- Override persists in localStorage; clearing localStorage restores system-following behavior
+
+## 2026-02-18
+
+### Rich editing features
+- Added TipTap extensions: underline, subscript, superscript, highlight, text color,
+  text alignment, tables, and image insertion
+- Extended heading levels from H1-H3 to H1-H6
+- Added toolbar buttons for all new formatting: U, Sub, Sup, Hi, H4-H6,
+  Left/Center/Right/Justify, HR, Img, Table, Code Block, and table editing
+  (+Row, -Row, +Col, -Col, DelTbl)
+- Active state highlighting for all new toggleable toolbar buttons
+
+### Tables
+- Installed `@tiptap/extension-table`, table-row, table-cell, table-header
+- Tables are resizable with column drag handles
+- Insert 3x3 table with header row via toolbar or Insert menu
+- Add/remove rows and columns, delete entire table
+
+### Image support
+- Installed `@tiptap/extension-image` with inline and base64 support
+- Insert images via URL prompt from toolbar or Insert menu
+
+### Text alignment
+- Installed `@tiptap/extension-text-align` for headings and paragraphs
+- Left, Center, Right, Justify via toolbar buttons and Format menu
+
+### Menus
+- Added Format menu with Underline (Cmd+U), Subscript, Superscript, Highlight,
+  and text alignment items
+- Added Insert menu with Horizontal Rule, Image, Table, Code Block
+- Added Toggle Fullscreen (Ctrl+Cmd+F) and Toggle Dark Theme to View menu
+- Added Import Markdown and Export as Markdown to File menu
+
+### Dark theme
+- Full dark theme toggle via View menu, persisted in localStorage
+- Dark styles for toolbar, sidebar, editor, status bar, find/replace, source view
+
+### Fullscreen mode
+- Toggle fullscreen via View > Toggle Fullscreen (Ctrl+Cmd+F)
+- Uses Tauri `setFullscreen()` window API
+
+### Word count warnings
+- Status bar turns red and bold when word count exceeds 5000
+
+### XHTML support
+- Added `.xhtml` to file picker filter and project scanner
+
+### Markdown import/export
+- Installed `turndown` (HTML-to-Markdown) and `marked` (Markdown-to-HTML)
+- File > Import Markdown opens `.md` file and converts to editor HTML
+- File > Export as Markdown saves editor content as `.md`
+- Added `open_markdown_file`, `read_text_file`, `save_markdown_file` Rust commands
+
+### README
+- Added features table with current and planned features comparing to BlueGriffon
+- Added documentation links section with file-path link text
+- Restructured to follow readme-fix conventions
+
+### CSS
+- Table, image, highlight, horizontal rule styles for editor content
+- Column resize handle and selected cell highlight for tables
+- Word count warning style on status bar
+
 ## 2026-02-16
 
 ### Native menu bar and single-file opening

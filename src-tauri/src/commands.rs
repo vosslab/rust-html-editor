@@ -22,7 +22,7 @@ pub struct ChapterData {
 pub async fn open_file(app: tauri::AppHandle) -> Result<String, String> {
     let file = app.dialog()
         .file()
-        .add_filter("HTML files", &["html", "htm"])
+        .add_filter("HTML files", &["html", "htm", "xhtml"])
         .blocking_pick_file();
 
     match file {
@@ -123,6 +123,46 @@ pub fn write_chapter(
         .map_err(|e| format!("Failed to write {}: {}", file_path, e))?;
 
     Ok(())
+}
+
+/// Open a native file picker for Markdown files and return the selected path.
+#[tauri::command]
+pub async fn open_markdown_file(app: tauri::AppHandle) -> Result<String, String> {
+    let file = app.dialog()
+        .file()
+        .add_filter("Markdown files", &["md", "markdown"])
+        .blocking_pick_file();
+
+    match file {
+        Some(path) => Ok(path.to_string()),
+        None => Err("No file selected".to_string()),
+    }
+}
+
+/// Read a text file and return its contents as a string.
+#[tauri::command]
+pub fn read_text_file(file_path: String) -> Result<String, String> {
+    std::fs::read_to_string(&file_path)
+        .map_err(|e| format!("Failed to read {}: {}", file_path, e))
+}
+
+/// Save Markdown content via a native save dialog.
+#[tauri::command]
+pub async fn save_markdown_file(app: tauri::AppHandle, content: String) -> Result<(), String> {
+    let file = app.dialog()
+        .file()
+        .add_filter("Markdown files", &["md"])
+        .blocking_save_file();
+
+    match file {
+        Some(path) => {
+            let path_str = path.to_string();
+            std::fs::write(&path_str, &content)
+                .map_err(|e| format!("Failed to write {}: {}", path_str, e))?;
+            Ok(())
+        }
+        None => Err("No file selected".to_string()),
+    }
 }
 
 /// Export a chapter by opening it in the default browser.

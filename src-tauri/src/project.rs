@@ -44,7 +44,7 @@ fn collect_html_files(
             .unwrap_or("")
             .to_lowercase();
 
-        if ext == "html" || ext == "htm" {
+        if ext == "html" || ext == "htm" || ext == "xhtml" {
             let filename = path.file_name()
                 .and_then(|n| n.to_str())
                 .unwrap_or("")

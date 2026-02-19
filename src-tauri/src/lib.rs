@@ -19,6 +19,9 @@ pub fn run() {
             commands::read_chapter,
             commands::write_chapter,
             commands::export_chapter,
+            commands::open_markdown_file,
+            commands::read_text_file,
+            commands::save_markdown_file,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
