@@ -2,6 +2,14 @@
 
 ## 2026-02-19
 
+### Dependency upgrades
+- Upgraded TipTap from v2 to v3 (`@tiptap/*` 2.27.2 -> 3.20.0)
+- Updated `editor.js` imports for TipTap v3 named exports (`TextStyle`, `Color`, `Table`, `TableRow`, `TableCell`, `TableHeader`)
+- Removed redundant packages now bundled into parent: `@tiptap/extension-color`, `@tiptap/extension-table-row`, `@tiptap/extension-table-cell`, `@tiptap/extension-table-header`
+- Upgraded Vite from v6 to v7 (6.4.1 -> 7.3.1)
+- Upgraded `scraper` Rust crate from 0.22 to 0.25
+- Ran `cargo update` to bump transitive Rust dependencies
+
 ### YAML-driven menus and toolbar
 - Added [config/menu_toolbar.yaml](../config/menu_toolbar.yaml) as single source of truth for native menus and toolbar buttons
 - Created [scripts/generate_menu_toolbar.py](../scripts/generate_menu_toolbar.py) build-time code generator
