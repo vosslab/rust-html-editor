@@ -2,6 +2,14 @@
 
 ## 2026-02-19
 
+### Ribbon-style toolbar grouping
+- Reorganized flat toolbar into labeled ribbon groups inspired by Office 365 Ribbon
+- Groups: File, History, Text, Heading, Align, Lists, Code, Insert, Table
+- Each group has a small label underneath and vertical dividers between groups
+- Moved Undo/Redo to the front as a History group
+- File/Folder/Save buttons now in a matching ribbon File group
+- Table editing group (+Row, -Row, +Col, -Col, DelTbl) hidden until cursor is inside a table
+
 ### Toolbar file buttons
 - Split single "Open" toolbar button into "File" and "Folder" buttons
 - "File" opens a single HTML file (Cmd+O), "Folder" opens a project directory (Cmd+Shift+O)

@@ -21,26 +21,26 @@ html, body {
   overflow: hidden;
 }
 
-/* Toolbar */
+/* Toolbar (ribbon layout) */
 #toolbar {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 4px;
-  padding: 6px 10px;
+  align-items: stretch;
+  gap: 0;
+  padding: 4px 6px;
   background: #e8e8e8;
   border-bottom: 1px solid #ccc;
-  min-height: 38px;
+  min-height: 48px;
 }
 
 #toolbar button {
-  padding: 4px 10px;
+  padding: 3px 8px;
   border: 1px solid #bbb;
   border-radius: 3px;
   background: #fff;
   cursor: pointer;
-  font-size: 13px;
-  line-height: 1.4;
+  font-size: 12px;
+  line-height: 1.3;
 }
 
 #toolbar button:hover {
@@ -51,6 +51,40 @@ html, body {
   background: #4a90d9;
   color: #fff;
   border-color: #357abd;
+}
+
+/* Ribbon group container */
+.ribbon-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2px 4px;
+}
+
+/* Button row within a ribbon group */
+.ribbon-buttons {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+/* Group label text */
+.ribbon-label {
+  font-size: 9px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+  line-height: 1;
+  user-select: none;
+}
+
+/* Divider between ribbon groups */
+.ribbon-divider {
+  width: 1px;
+  align-self: stretch;
+  background: #bbb;
+  margin: 4px 3px;
 }
 
 /* Main area: sidebar + editor */
@@ -397,7 +431,11 @@ body.dark #source-textarea {
   color: #e0e0e0;
 }
 
-/* Dark toolbar separator */
-body.dark #toolbar span {
-  background: #555 !important;
+/* Dark ribbon elements */
+body.dark .ribbon-label {
+  color: #777;
+}
+
+body.dark .ribbon-divider {
+  background: #555;
 }

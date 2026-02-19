@@ -296,49 +296,53 @@ function setupKeyboardShortcuts() {
 //============================================
 function addToolbarOpenButton() {
   /**
-   * Add an "Open Project" button to the toolbar.
+   * Prepend a ribbon-style "File" group to the toolbar.
    */
   const toolbar = document.querySelector("#toolbar");
-
-  // Build elements in reverse order for prepending (last added = leftmost)
   const firstChild = toolbar.firstChild;
 
-  // Separator after Save
-  const sep2 = document.createElement("span");
-  sep2.style.width = "1px";
-  sep2.style.height = "20px";
-  sep2.style.background = "#ccc";
-  sep2.style.margin = "0 6px";
-  toolbar.insertBefore(sep2, firstChild);
+  // Divider after File group
+  const divider = document.createElement("span");
+  divider.className = "ribbon-divider";
+  toolbar.insertBefore(divider, firstChild);
 
-  // Save button
-  const saveBtn = document.createElement("button");
-  saveBtn.textContent = "Save";
-  saveBtn.title = "Save (Cmd+S)";
-  saveBtn.addEventListener("click", saveCurrentChapter);
-  toolbar.insertBefore(saveBtn, firstChild);
+  // File group container
+  const groupEl = document.createElement("div");
+  groupEl.className = "ribbon-group";
 
-  // Separator between file buttons and Save
-  const sep = document.createElement("span");
-  sep.style.width = "1px";
-  sep.style.height = "20px";
-  sep.style.background = "#ccc";
-  sep.style.margin = "0 6px";
-  toolbar.insertBefore(sep, firstChild);
+  const btnRow = document.createElement("div");
+  btnRow.className = "ribbon-buttons";
+
+  // Open File button
+  const openBtn = document.createElement("button");
+  openBtn.textContent = "File";
+  openBtn.title = "Open File (Cmd+O)";
+  openBtn.addEventListener("click", openFile);
+  btnRow.appendChild(openBtn);
 
   // Open Folder button
   const folderBtn = document.createElement("button");
   folderBtn.textContent = "Folder";
   folderBtn.title = "Open Folder (Cmd+Shift+O)";
   folderBtn.addEventListener("click", openProject);
-  toolbar.insertBefore(folderBtn, firstChild);
+  btnRow.appendChild(folderBtn);
 
-  // Open File button (leftmost)
-  const openBtn = document.createElement("button");
-  openBtn.textContent = "File";
-  openBtn.title = "Open File (Cmd+O)";
-  openBtn.addEventListener("click", openFile);
-  toolbar.insertBefore(openBtn, firstChild);
+  // Save button
+  const saveBtn = document.createElement("button");
+  saveBtn.textContent = "Save";
+  saveBtn.title = "Save (Cmd+S)";
+  saveBtn.addEventListener("click", saveCurrentChapter);
+  btnRow.appendChild(saveBtn);
+
+  groupEl.appendChild(btnRow);
+
+  // Group label
+  const label = document.createElement("span");
+  label.className = "ribbon-label";
+  label.textContent = "File";
+  groupEl.appendChild(label);
+
+  toolbar.insertBefore(groupEl, firstChild);
 }
 
 //============================================
