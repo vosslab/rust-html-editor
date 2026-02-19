@@ -2,6 +2,18 @@
 
 ## 2026-02-19
 
+### YAML-driven menus and toolbar
+- Added [config/menu_toolbar.yaml](../config/menu_toolbar.yaml) as single source of truth for native menus and toolbar buttons
+- Created [scripts/generate_menu_toolbar.py](../scripts/generate_menu_toolbar.py) build-time code generator
+- Generator produces `src-tauri/src/generated_menu.rs`, `src/generated_toolbar_data.js`, and `src/generated_menu_actions.js`
+- YAML is processed at build time only; no YAML parser ships with the app
+- Generated files are committed to git so fresh clones build without running the generator
+- Deleted `src-tauri/src/menu.rs`; replaced by generated `generated_menu.rs`
+- Updated `toolbar.js` to import group definitions and active state checks from generated data
+- Updated `main.js` to use generated `handleEditorMenuAction()` for editor commands; hand-written switch retained for app-function actions only
+- Added `npm run generate` script; wired into `dev` and `build` scripts in [package.json](../package.json)
+- Build-time validation checks for duplicate IDs and missing action/editor_command fields
+
 ### Ribbon-style toolbar grouping
 - Reorganized flat toolbar into labeled ribbon groups inspired by Office 365 Ribbon
 - Groups: File, History, Text, Heading, Align, Lists, Code, Insert, Table

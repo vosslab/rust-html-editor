@@ -13,11 +13,17 @@ rust-html-editor/
 |-- app-icon.png                     Source icon (generated, gitignored)
 |-- pip_requirements-dev.txt         Python dev dependencies (pytest, etc.)
 |-- source_me.sh                     Bash environment bootstrap
+|-- config/
+|   |-- menu_toolbar.yaml            Single source of truth for menus and toolbar
+|-- scripts/
+|   |-- generate_menu_toolbar.py     Build-time code generator (YAML to Rust/JS)
 |-- src/
 |   |-- main.js                      App init, wiring, keyboard shortcuts
 |   |-- editor.js                    TipTap editor factory
 |   |-- sidebar.js                   Chapter list rendering
-|   |-- toolbar.js                   Formatting buttons
+|   |-- toolbar.js                   Formatting buttons (data-driven)
+|   |-- generated_toolbar_data.js    Generated toolbar groups, active checks, special handlers
+|   |-- generated_menu_actions.js    Generated editor-command menu dispatcher
 |   |-- status_bar.js                Filename, dirty, word count display
 |   |-- css_injector.js              Project CSS injection
 |   |-- dirty_guard.js               Unsaved changes guard
@@ -41,6 +47,7 @@ rust-html-editor/
 |       |-- html_parser.rs           HTML split/reassemble
 |       |-- project.rs               File operations (list, read, write)
 |       |-- backup.rs                Per-session backup tracker
+|       |-- generated_menu.rs        Generated native menu bar setup
 |-- docs/
 |   |-- AUTHORS.md                   Maintainers
 |   |-- CHANGELOG.md                 Change log

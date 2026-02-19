@@ -1,0 +1,337 @@
+# menu_toolbar.yaml -- Single source of truth for native menus and toolbar buttons.
+# Processed at build time by scripts/generate_menu_toolbar.py.
+# Generated files are committed to git so fresh clones build without running the generator.
+
+menus:
+  - name: "Rust HTML Editor"
+    items:
+      - predefined: about
+        about_name: "About Rust HTML Editor"
+      - separator
+      - predefined: hide
+      - predefined: hide_others
+      - predefined: show_all
+      - separator
+      - predefined: quit
+
+  - name: File
+    items:
+      - id: open_file
+        label: "Open File..."
+        accelerator: "CmdOrCtrl+O"
+        action: app_function
+      - id: open_project
+        label: "Open Folder..."
+        accelerator: "CmdOrCtrl+Shift+O"
+        action: app_function
+      - separator
+      - id: save
+        label: "Save"
+        accelerator: "CmdOrCtrl+S"
+        action: app_function
+      - id: export
+        label: "Export to Browser"
+        action: app_function
+      - separator
+      - id: import_markdown
+        label: "Import Markdown..."
+        action: app_function
+      - id: export_markdown
+        label: "Export as Markdown..."
+        action: app_function
+      - separator
+      - id: close_window
+        label: "Close Window"
+        accelerator: "CmdOrCtrl+W"
+        action: app_function
+
+  - name: Edit
+    items:
+      - id: undo
+        label: "Undo"
+        accelerator: "CmdOrCtrl+Z"
+        editor_command: undo
+      - id: redo
+        label: "Redo"
+        accelerator: "CmdOrCtrl+Shift+Z"
+        editor_command: redo
+      - separator
+      - predefined: cut
+      - predefined: copy
+      - predefined: paste
+      - predefined: select_all
+      - separator
+      - id: find
+        label: "Find and Replace..."
+        accelerator: "CmdOrCtrl+F"
+        action: app_function
+
+  - name: Format
+    items:
+      - id: underline
+        label: "Underline"
+        accelerator: "CmdOrCtrl+U"
+        editor_command: toggleUnderline
+      - id: subscript
+        label: "Subscript"
+        editor_command: toggleSubscript
+      - id: superscript
+        label: "Superscript"
+        editor_command: toggleSuperscript
+      - id: highlight
+        label: "Highlight"
+        editor_command: toggleHighlight
+      - separator
+      - id: align_left
+        label: "Align Left"
+        editor_command: setTextAlign
+        editor_args: "left"
+      - id: align_center
+        label: "Align Center"
+        editor_command: setTextAlign
+        editor_args: "center"
+      - id: align_right
+        label: "Align Right"
+        editor_command: setTextAlign
+        editor_args: "right"
+      - id: align_justify
+        label: "Justify"
+        editor_command: setTextAlign
+        editor_args: "justify"
+
+  - name: Insert
+    items:
+      - id: horizontal_rule
+        label: "Horizontal Rule"
+        editor_command: setHorizontalRule
+      - id: insert_image
+        label: "Image..."
+        action: prompt_url
+        prompt_text: "Enter image URL:"
+        editor_command: setImage
+        editor_args_key: src
+      - id: insert_table
+        label: "Table (3x3)"
+        editor_command: insertTable
+        editor_args:
+          rows: 3
+          cols: 3
+          withHeaderRow: true
+      - id: code_block
+        label: "Code Block"
+        editor_command: toggleCodeBlock
+
+  - name: View
+    items:
+      - id: source_view
+        label: "Toggle Source View"
+        accelerator: "CmdOrCtrl+Shift+U"
+        action: app_function
+      - id: fullscreen
+        label: "Toggle Fullscreen"
+        accelerator: "Ctrl+CmdOrCtrl+F"
+        action: app_function
+      - id: dark_theme
+        label: "Toggle Dark Theme"
+        action: app_function
+      - separator
+      - id: zoom_in
+        label: "Zoom In"
+        accelerator: "CmdOrCtrl+="
+        action: app_function
+      - id: zoom_out
+        label: "Zoom Out"
+        accelerator: "CmdOrCtrl+-"
+        action: app_function
+      - id: zoom_reset
+        label: "Actual Size"
+        accelerator: "CmdOrCtrl+0"
+        action: app_function
+
+  - name: Navigate
+    items:
+      - id: next_chapter
+        label: "Next Chapter"
+        accelerator: "Alt+PageDown"
+        action: app_function
+      - id: prev_chapter
+        label: "Previous Chapter"
+        accelerator: "Alt+PageUp"
+        action: app_function
+
+toolbar_groups:
+  - name: History
+    buttons:
+      - label: "Undo"
+        command: undo
+        title: "Undo (Cmd+Z)"
+      - label: "Redo"
+        command: redo
+        title: "Redo (Cmd+Shift+Z)"
+
+  - name: Text
+    buttons:
+      - label: "B"
+        command: toggleBold
+        title: "Bold (Cmd+B)"
+        active_check: bold
+      - label: "I"
+        command: toggleItalic
+        title: "Italic (Cmd+I)"
+        active_check: italic
+      - label: "U"
+        command: toggleUnderline
+        title: "Underline (Cmd+U)"
+        active_check: underline
+      - label: "S"
+        command: toggleStrike
+        title: "Strikethrough"
+        active_check: strike
+      - label: "Sub"
+        command: toggleSubscript
+        title: "Subscript"
+        active_check: subscript
+      - label: "Sup"
+        command: toggleSuperscript
+        title: "Superscript"
+        active_check: superscript
+      - label: "Hi"
+        command: toggleHighlight
+        title: "Highlight"
+        active_check: highlight
+
+  - name: Heading
+    buttons:
+      - label: "P"
+        command: setParagraph
+        title: "Paragraph"
+      - label: "H1"
+        command: toggleHeading
+        args: { level: 1 }
+        title: "Heading 1"
+        active_check: heading
+        active_args: { level: 1 }
+      - label: "H2"
+        command: toggleHeading
+        args: { level: 2 }
+        title: "Heading 2"
+        active_check: heading
+        active_args: { level: 2 }
+      - label: "H3"
+        command: toggleHeading
+        args: { level: 3 }
+        title: "Heading 3"
+        active_check: heading
+        active_args: { level: 3 }
+      - label: "H4"
+        command: toggleHeading
+        args: { level: 4 }
+        title: "Heading 4"
+        active_check: heading
+        active_args: { level: 4 }
+      - label: "H5"
+        command: toggleHeading
+        args: { level: 5 }
+        title: "Heading 5"
+        active_check: heading
+        active_args: { level: 5 }
+      - label: "H6"
+        command: toggleHeading
+        args: { level: 6 }
+        title: "Heading 6"
+        active_check: heading
+        active_args: { level: 6 }
+
+  - name: Align
+    buttons:
+      - label: "Left"
+        command: setTextAlign
+        args: "left"
+        title: "Align Left"
+        active_check_attr: { textAlign: "left" }
+      - label: "Center"
+        command: setTextAlign
+        args: "center"
+        title: "Align Center"
+        active_check_attr: { textAlign: "center" }
+      - label: "Right"
+        command: setTextAlign
+        args: "right"
+        title: "Align Right"
+        active_check_attr: { textAlign: "right" }
+      - label: "Justify"
+        command: setTextAlign
+        args: "justify"
+        title: "Justify"
+        active_check_attr: { textAlign: "justify" }
+
+  - name: Lists
+    buttons:
+      - label: "UL"
+        command: toggleBulletList
+        title: "Bullet List"
+        active_check: bulletList
+      - label: "OL"
+        command: toggleOrderedList
+        title: "Ordered List"
+        active_check: orderedList
+      - label: "BQ"
+        command: toggleBlockquote
+        title: "Blockquote"
+        active_check: blockquote
+
+  - name: Code
+    buttons:
+      - label: "Code"
+        command: toggleCode
+        title: "Inline Code"
+        active_check: code
+      - label: "CB"
+        command: toggleCodeBlock
+        title: "Code Block"
+        active_check: codeBlock
+
+  - name: Insert
+    buttons:
+      - label: "Link"
+        command: setLink
+        title: "Insert Link"
+        active_check: link
+        special: prompt_url
+        prompt_text: "Enter URL:"
+        editor_command: setLink
+        editor_args_key: href
+      - label: "HR"
+        command: setHorizontalRule
+        title: "Horizontal Rule"
+      - label: "Img"
+        command: insertImage
+        title: "Insert Image"
+        special: prompt_url
+        prompt_text: "Enter image URL:"
+        editor_command: setImage
+        editor_args_key: src
+      - label: "Table"
+        command: insertTable
+        title: "Insert Table (3x3)"
+        special: insert_table
+
+  - name: Table
+    dom_id: "ribbon-table-group"
+    visibility: in_table
+    buttons:
+      - label: "+Row"
+        command: addRowAfter
+        title: "Add Row After"
+      - label: "-Row"
+        command: deleteRow
+        title: "Delete Row"
+      - label: "+Col"
+        command: addColumnAfter
+        title: "Add Column After"
+      - label: "-Col"
+        command: deleteColumn
+        title: "Delete Column"
+      - label: "DelTbl"
+        command: deleteTable
+        title: "Delete Table"

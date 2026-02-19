@@ -4,8 +4,9 @@
   "version": "26.2.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "generate": "python3 scripts/generate_menu_toolbar.py",
+    "dev": "npm run generate && vite",
+    "build": "npm run generate && vite build",
     "preview": "vite preview",
     "tauri": "tauri"
   },

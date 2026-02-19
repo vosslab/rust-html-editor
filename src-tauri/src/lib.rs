@@ -1,7 +1,7 @@
 mod backup;
 mod commands;
 mod html_parser;
-mod menu;
+mod generated_menu;
 mod project;
 
 pub fn run() {
@@ -9,7 +9,7 @@ pub fn run() {
         .plugin(tauri_plugin_dialog::init())
         .manage(backup::BackupTracker::new())
         .setup(|app| {
-            menu::setup_menu(app)?;
+            generated_menu::setup_menu(app)?;
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![

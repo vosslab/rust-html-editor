@@ -10,6 +10,7 @@ import { setDirty, getDirty, guardNavigation } from "./dirty_guard.js";
 import { initFindReplace, toggleFindReplace } from "./find_replace.js";
 import { initSourceView, toggleSourceView, isInSourceMode } from "./source_view.js";
 import { initZoom, zoomIn, zoomOut, zoomReset } from "./zoom.js";
+import { handleEditorMenuAction } from "./generated_menu_actions.js";
 
 // Application state
 let editor = null;
@@ -391,9 +392,18 @@ function init() {
 function setupMenuListener() {
   /**
    * Handle native macOS menu bar events from Rust.
+   * Editor commands are handled by the generated dispatcher.
+   * App-function actions are handled here in the hand-written switch.
    */
   listen("menu-action", (event) => {
     const action = event.payload;
+
+    // Try generated editor-command handler first
+    if (handleEditorMenuAction(editor, action)) {
+      return;
+    }
+
+    // App-function actions (hand-written)
     switch (action) {
       case "open_file":
         openFile();
@@ -411,12 +421,6 @@ function setupMenuListener() {
         break;
       case "close_window":
         getCurrentWindow().close();
-        break;
-      case "undo":
-        editor.chain().focus().undo().run();
-        break;
-      case "redo":
-        editor.chain().focus().redo().run();
         break;
       case "find":
         toggleFindReplace();
@@ -439,56 +443,12 @@ function setupMenuListener() {
       case "prev_chapter":
         navigateChapter(-1);
         break;
-      // Format menu actions
-      case "underline":
-        editor.chain().focus().toggleUnderline().run();
-        break;
-      case "subscript":
-        editor.chain().focus().toggleSubscript().run();
-        break;
-      case "superscript":
-        editor.chain().focus().toggleSuperscript().run();
-        break;
-      case "highlight":
-        editor.chain().focus().toggleHighlight().run();
-        break;
-      case "align_left":
-        editor.chain().focus().setTextAlign("left").run();
-        break;
-      case "align_center":
-        editor.chain().focus().setTextAlign("center").run();
-        break;
-      case "align_right":
-        editor.chain().focus().setTextAlign("right").run();
-        break;
-      case "align_justify":
-        editor.chain().focus().setTextAlign("justify").run();
-        break;
-      // Insert menu actions
-      case "horizontal_rule":
-        editor.chain().focus().setHorizontalRule().run();
-        break;
-      case "insert_image": {
-        const url = window.prompt("Enter image URL:");
-        if (url) {
-          editor.chain().focus().setImage({ src: url }).run();
-        }
-        break;
-      }
-      case "insert_table":
-        editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
-        break;
-      case "code_block":
-        editor.chain().focus().toggleCodeBlock().run();
-        break;
-      // View menu actions
       case "fullscreen":
         toggleFullscreen();
         break;
       case "dark_theme":
         toggleTheme();
         break;
-      // Markdown import/export
       case "import_markdown":
         importMarkdown();
         break;
